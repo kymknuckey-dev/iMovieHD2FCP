@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# Generated output
+output/
+
+# IDEs
+.vscode/
+.idea/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
