@@ -21,3 +21,28 @@ output/
 *.egg-info/
 dist/
 build/
+
+# Python virtual environment
+.venv/
+venv/
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# macOS
+.DS_Store
+
+# Conversion outputs and large media
+output/
+*.mov
+*.mp4
+*.m4v
+*.avi
+*.dv
+*.aiff
+*.wav
+*.webm
