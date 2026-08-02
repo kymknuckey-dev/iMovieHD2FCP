@@ -43,7 +43,7 @@ def main() -> int:
         print("ERROR: No active virtual environment.")
         print("Run: source .venv/bin/activate")
         return 2
-    if Path(sys.executable).resolve().parent != venv / "bin":
+    if Path(sys.executable).parent.resolve() != (venv / "bin").resolve():
         print(f"ERROR: Python is not from the active virtual environment: {sys.executable}")
         return 2
     if not pip_belongs_to_venv(venv):
