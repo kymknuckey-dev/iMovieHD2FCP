@@ -1,35 +1,23 @@
-# iMovieHD2FCP v1.0.0 Release Candidate 2
+# iMovieHD2FCP v1.0.0 Release Candidate 3
 
 `iMovieHD2FCP` migrates legacy iMovie HD projects into modern Final Cut Pro.
 
-This release candidate consolidates the proven archive analyser, v1 converter,
-resumable batch workflow, verification, Event planning and safe Event imports
-behind one command.
+RC3 keeps the proven RC2 conversion engine frozen and completes the operational
+product layer:
 
-## Current production workflow
+- unified command-line interface;
+- resume-safe batch conversion;
+- post-conversion verification;
+- persistent command logs;
+- text and HTML archive reports;
+- Event planning;
+- safe intact per-project Final Cut imports;
+- installer and environment diagnostics;
+- product documentation and tests.
 
-```text
-Analyse archive
-→ Convert projects
-→ Verify outputs
-→ Plan Final Cut Events
-→ Build safe Event import set
-→ Import XML files into Final Cut
-```
+## Install or upgrade
 
-The product deliberately creates one intact FCPXML per original iMovie project.
-It does not merge complete XML documents. This preserves the internally proven
-timeline and resource relationships.
-
-## Install over the existing project
-
-Extract this package into:
-
-```text
-~/Development/iMovieHD2FCP
-```
-
-The existing proven scripts must remain in that folder. Then run:
+Merge the RC3 files into the existing project folder, then run:
 
 ```bash
 cd ~/Development/iMovieHD2FCP
@@ -38,83 +26,32 @@ python3 install_product.py
 imoviehd2fcp doctor
 ```
 
-## Commands
-
-### Check the installation
+## Main commands
 
 ```bash
 imoviehd2fcp doctor
+imoviehd2fcp analyse SOURCE OUTPUT
+imoviehd2fcp convert SOURCE OUTPUT
+imoviehd2fcp verify SOURCE OUTPUT
+imoviehd2fcp report OUTPUT
+imoviehd2fcp plan-events OUTPUT --plan EVENT_PLAN.csv
+imoviehd2fcp build-imports --plan EVENT_PLAN.csv --output FINAL_CUT_IMPORTS
 ```
 
-### Analyse an archive
+## RC3 output additions
 
-```bash
-imoviehd2fcp analyse \
-  "/Volumes/10TB Seagate/Europe 2005 Final Projects" \
-  "/Volumes/10TB Seagate/Europe 2005 Analysis"
+A successful conversion now includes:
+
+```text
+Conversion Destination/
+├── batch-conversion-state.json
+├── batch-conversion-summary.json
+├── batch-conversion-summary.csv
+├── batch-conversion-report.txt
+├── Logs/
+└── Reports/
+    ├── Archive Verification Report.txt
+    └── Archive Verification Report.html
 ```
 
-### Convert an archive
-
-```bash
-imoviehd2fcp convert \
-  "/Volumes/10TB Seagate/Europe 2005 Final Projects" \
-  "/Volumes/10TB Seagate/Europe 2005 Final Projects Converted v1"
-```
-
-The batch conversion is resume-safe. Rerunning the same command skips completed
-projects unless `--force` is supplied.
-
-### Verify existing outputs
-
-```bash
-imoviehd2fcp verify \
-  "/Volumes/10TB Seagate/Europe 2005 Final Projects" \
-  "/Volumes/10TB Seagate/Europe 2005 Final Projects Converted v1"
-```
-
-### Create the Event plan
-
-```bash
-imoviehd2fcp plan-events \
-  "/Volumes/10TB Seagate/Europe 2005 Final Projects Converted v1" \
-  --plan "/Volumes/10TB Seagate/Europe 2005 Event Plan.csv" \
-  --event-mode parent
-```
-
-Edit the `event_name` column in Numbers or Excel.
-
-### Build safe Event imports
-
-```bash
-imoviehd2fcp build-imports \
-  --plan "/Volumes/10TB Seagate/Europe 2005 Event Plan.csv" \
-  --output "/Volumes/10TB Seagate/Europe 2005 Final Cut Imports"
-```
-
-Import the numbered XML files into the intended Final Cut library.
-
-## Known metadata behaviour
-
-The v1 converter preserves source filesystem dates and writes QuickTime
-`creation_time` metadata. Some original iMovie assets have inconsistent dates
-or duplicate logical names. These are reported rather than silently rewritten.
-
-A later metadata refinement will add full timestamp provenance and cleaner
-duplicate display-name numbering without changing underlying media identity.
-
-
-## RC2 refinements
-
-RC2 adds:
-
-- full timestamp provenance in every media and soundtrack manifest entry;
-- deterministic timestamp selection with a recorded reason;
-- embedded media creation-time preference where available;
-- clean duplicate Browser names such as `Clip 13 (2)`;
-- unchanged source filenames, hashes and UIDs;
-- installer refusal when the active Python or pip is outside `.venv`;
-- expanded `doctor` checks for the Python environment.
-
-After installing RC2, reconvert a representative project with `--force` or use a
-fresh output folder to see the new manifest format and duplicate naming.
+See `docs/GETTING_STARTED.md` and `docs/USER_GUIDE.md`.

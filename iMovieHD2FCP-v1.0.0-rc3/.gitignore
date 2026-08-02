@@ -1,0 +1,29 @@
+# Virtual environments
+.venv/
+venv/
+
+# Python generated
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# macOS
+.DS_Store
+
+# Product outputs
+output/
+Logs/
+logs/
+
+# Large media
+*.mov
+*.mp4
+*.m4v
+*.avi
+*.dv
+*.aiff
+*.wav
+*.webm

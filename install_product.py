@@ -78,7 +78,7 @@ def main() -> int:
         return 1
 
     print("")
-    print("Installing iMovieHD2FCP in editable mode...")
+    print("Installing or upgrading iMovieHD2FCP RC3 in editable mode...")
     completed = subprocess.run(
         [sys.executable, "-m", "pip", "install", "--no-user", "-e", str(root)],
         check=False,
