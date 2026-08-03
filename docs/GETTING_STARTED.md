@@ -2,69 +2,42 @@
 
 Welcome to **iMovieHD2FCP**.
 
-This guide will take you from installing the software to importing your first converted iMovie HD project into Final Cut Pro.
+This guide walks you through your first successful conversion of an iMovie HD archive into Final Cut Pro.
 
-Most users can complete these steps in **10–15 minutes**.
+By the end of this guide you will have:
 
----
+- Installed the software
+- Verified your installation
+- Analysed an archive
+- Converted the archive
+- Verified the conversion
+- Created an Event Plan
+- Generated Final Cut Pro import packages
+- Imported the projects into Final Cut Pro
 
-## Contents
-
-- [Overview](#overview)
-- [System Requirements](#system-requirements)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Verify the Installation](#verify-the-installation)
-- [Your First Analysis](#your-first-analysis)
-- [Your First Conversion](#your-first-conversion)
-- [Generate Reports](#generate-reports)
-- [Plan Final Cut Pro Events](#plan-final-cut-pro-events)
-- [Build Import XMLs](#build-import-xmls)
-- [Import into Final Cut Pro](#import-into-final-cut-pro)
-- [Recommended Workflow](#recommended-workflow)
-- [Next Steps](#next-steps)
+No previous knowledge of the software is assumed.
 
 ---
 
-# Overview
+# Before You Begin
 
-iMovieHD2FCP helps preserve legacy **iMovie HD (iMovie 6)** projects by converting them into formats suitable for modern versions of **Final Cut Pro**.
+## Requirements
 
-The application can:
+Before installing iMovieHD2FCP ensure you have:
 
-- Analyse iMovie HD archives
-- Convert media into modern formats
-- Preserve project structure
-- Generate HTML and text reports
-- Plan Final Cut Pro Events
-- Create Final Cut Pro XML import files
-- Verify completed conversions
-
-No original files are modified.
+- macOS
+- Python 3.9 or later
+- FFmpeg installed and available in your PATH
+- Final Cut Pro
+- A copy of your iMovie HD archive
 
 ---
 
-# System Requirements
+## Verify Python
 
-### Operating System
+Open Terminal.
 
-- macOS 13 Ventura or later
-- Apple Silicon or Intel
-
-### Software
-
-- Python 3.11 or newer
-- FFmpeg
-- FFprobe
-- Final Cut Pro (recommended)
-
----
-
-# Prerequisites
-
-Install Python if it is not already available.
-
-Verify:
+Run:
 
 ```bash
 python3 --version
@@ -78,16 +51,21 @@ Python 3.14.0
 
 ---
 
-Install FFmpeg.
+## Verify FFmpeg
 
-Verify:
+Run:
 
 ```bash
 ffmpeg -version
-ffprobe -version
 ```
 
-Both commands should display version information.
+If FFmpeg is installed you will see version information.
+
+If not, install it using Homebrew:
+
+```bash
+brew install ffmpeg
+```
 
 ---
 
@@ -97,6 +75,11 @@ Clone the repository.
 
 ```bash
 git clone https://github.com/kymknuckey-dev/iMovieHD2FCP.git
+```
+
+Enter the project directory.
+
+```bash
 cd iMovieHD2FCP
 ```
 
@@ -112,150 +95,192 @@ Activate it.
 source .venv/bin/activate
 ```
 
-Install dependencies.
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the installer.
+Install the product.
 
 ```bash
 python3 install_product.py
 ```
 
-The installer configures the project and verifies required components.
-
 ---
 
 # Verify the Installation
 
-Confirm the application is installed correctly.
+Run:
 
 ```bash
 imoviehd2fcp doctor
 ```
 
-Expected result:
+A successful installation finishes with:
 
 ```text
 READY
 ```
 
-You can also check the installed version.
+The Doctor command also confirms:
 
-```bash
-imoviehd2fcp --version
-```
+- Python environment
+- FFmpeg installation
+- FFprobe installation
+- Product components
+- Legacy conversion modules
 
-Example:
-
-```text
-1.0.0
-```
+If Doctor reports any problems, see **TROUBLESHOOTING.md**.
 
 ---
 
-# Your First Analysis
+# Understanding the Workflow
 
-Before converting an archive, analyse it.
+Every archive follows the same sequence.
+
+```
+Analyse
+
+↓
+
+Convert
+
+↓
+
+Verify
+
+↓
+
+Plan Events
+
+↓
+
+Build XML Imports
+
+↓
+
+Import into Final Cut Pro
+```
+
+Each step produces information used by the next step.
+
+---
+
+# Step 1 – Analyse Your Archive
+
+The Analyse command inspects the archive without changing any files.
 
 Example:
 
 ```bash
-imoviehd2fcp analyse "/Volumes/Archives/Europe 2005"
+imoviehd2fcp analyse \
+"/Volumes/Media/Europe 2005" \
+"/Volumes/Media/Europe 2005 Output"
 ```
 
-The analysis reports:
+The output folder will contain reports describing:
 
 - Projects discovered
-- Media statistics
-- Missing files
+- Media files
+- Missing media
+- Titles
+- Transitions
 - Timeline information
-- Conversion requirements
+- Overall archive statistics
 
-No files are modified.
+Review these reports before converting.
 
 ---
 
-# Your First Conversion
+# Step 2 – Convert the Archive
 
-Convert an archive.
-
-Example:
+Once you are satisfied with the analysis, convert the archive.
 
 ```bash
-imoviehd2fcp convert "/Volumes/Archives/Europe 2005"
+imoviehd2fcp convert \
+"/Volumes/Media/Europe 2005" \
+"/Volumes/Media/Europe 2005 Output"
 ```
 
-During conversion the application will:
+During conversion the software:
 
-- analyse the archive
-- convert compatible media
-- preserve project structure
-- create reports
-- prepare Final Cut Pro assets
+- Processes project media
+- Preserves original files
+- Creates Final Cut Pro compatible assets
+- Builds project metadata
+- Generates reports
 
-Original files remain unchanged.
+The original archive is never modified.
 
 ---
 
-# Generate Reports
+# Step 3 – Verify the Conversion
 
-Reports provide a permanent record of the archive.
+Verify confirms that every expected output has been created.
 
-Create reports with:
+Run:
 
 ```bash
-imoviehd2fcp report "/Volumes/Archives/Europe 2005"
+imoviehd2fcp verify \
+"/Volumes/Media/Europe 2005" \
+"/Volumes/Media/Europe 2005 Output"
 ```
 
-Reports include:
+Verification checks:
 
-- HTML summary
-- Text summary
-- Media inventory
-- Conversion statistics
-- Warnings
-- Missing assets
+- Converted media
+- Missing files
+- Generated metadata
+- XML preparation
+- Report consistency
 
-These reports are useful for archival purposes.
+If problems are found they should be corrected before importing into Final Cut Pro.
 
 ---
 
-# Plan Final Cut Pro Events
+# Step 4 – Create an Event Plan
 
-Many archives contain multiple projects.
+Final Cut Pro stores projects inside Events.
 
-Generate an editable Event plan.
+iMovieHD2FCP allows you to decide how projects should be grouped before XML is generated.
+
+Generate an editable Event Plan.
 
 ```bash
-imoviehd2fcp plan-events "/Volumes/Archives/Europe 2005"
+imoviehd2fcp plan-events \
+"/Volumes/Media/Europe 2005 Output" \
+--plan "/Volumes/Media/Event Plan.csv"
 ```
 
-This creates a CSV file that allows projects to be grouped into Final Cut Pro Events before XML files are generated.
+Open the CSV in:
+
+- Numbers
+- Excel
+- LibreOffice
+- Google Sheets
+
+You may rename Events or reorganise projects.
+
+Save the edited CSV.
 
 ---
 
-# Build Import XMLs
+# Step 5 – Build Final Cut Pro Imports
 
-Once the Event plan has been reviewed, build the Final Cut Pro XML import files.
+Generate Final Cut Pro XML packages.
 
 ```bash
-imoviehd2fcp build-imports "/Volumes/Archives/Europe 2005"
+imoviehd2fcp build-imports \
+--plan "/Volumes/Media/Event Plan.csv" \
+--output "/Volumes/Media/FCP Imports"
 ```
 
-The generated XML files can then be imported into Final Cut Pro.
+The output folder will contain one XML import package for each project.
 
 ---
 
-# Import into Final Cut Pro
+# Step 6 – Import into Final Cut Pro
 
 Open Final Cut Pro.
 
-Create a Library for the migrated archive.
+Create a Library.
 
-Choose:
+Select:
 
 ```
 File
@@ -263,53 +288,92 @@ File
         XML...
 ```
 
-Select the generated XML file.
+Choose one of the generated XML files.
 
-Final Cut Pro will recreate the project structure using the converted media.
+Repeat for additional projects if required.
+
+Final Cut Pro will create:
+
+- Events
+- Projects
+- Media links
+
+based on the generated XML.
 
 ---
 
-# Recommended Workflow
+# Reviewing the Imported Projects
 
-The recommended migration process is:
+After importing:
 
-```
-Analyse Archive
-        │
-        ▼
+- Check project duration
+- Review transitions
+- Review titles
+- Confirm media links
+- Play the project from beginning to end
+
+Minor adjustments may occasionally be required depending on the original iMovie HD project.
+
+---
+
+# Common Workflow
+
+The complete workflow can be summarised as:
+
+```text
+Doctor
+
+↓
+
+Analyse
+
+↓
+
 Review Reports
-        │
-        ▼
-Convert Archive
-        │
-        ▼
-Verify Results
-        │
-        ▼
-Plan Events
-        │
-        ▼
-Build Import XMLs
-        │
-        ▼
-Import into Final Cut Pro
-```
 
-Following this workflow ensures that problems are identified before import.
+↓
+
+Convert
+
+↓
+
+Verify
+
+↓
+
+Create Event Plan
+
+↓
+
+Generate XML
+
+↓
+
+Import into Final Cut Pro
+
+↓
+
+Review Projects
+```
 
 ---
 
 # Next Steps
 
-Once you have completed your first migration, the following guides provide more detailed information.
+Once you are comfortable with the workflow you can explore:
 
-| Guide | Description |
-|--------|-------------|
-| USER_GUIDE.md | Complete user documentation |
-| CLI_REFERENCE.md | Full command reference |
-| WORKFLOW.md | Recommended migration workflow |
-| TROUBLESHOOTING.md | Solving common issues |
-| FAQ.md | Frequently asked questions |
+- batch conversions
+- partial conversions
+- advanced Event planning
+- archive reporting
+
+See:
+
+- USER_GUIDE.md
+- CLI_REFERENCE.md
+- WORKFLOW.md
+
+for more detailed information.
 
 ---
 
@@ -317,29 +381,33 @@ Once you have completed your first migration, the following guides provide more 
 
 If something does not work as expected:
 
-1. Run
+1. Run:
 
 ```bash
 imoviehd2fcp doctor
 ```
 
-2. Review
+2. Review:
 
 ```
 docs/TROUBLESHOOTING.md
 ```
 
-3. Check the generated reports.
+3. Include the following when requesting support:
 
-4. Submit an issue on GitHub, including:
-
-- iMovieHD2FCP version
 - macOS version
 - Python version
-- FFmpeg version
-- error messages
-- relevant log files
+- Final Cut Pro version
+- Doctor output
+- Console output
+- Sample project (if possible)
+
+This information greatly assists troubleshooting.
 
 ---
 
-© 2026 iMovieHD2FCP Project
+**Congratulations!**
+
+You have successfully completed your first iMovie HD to Final Cut Pro migration.
+
+The remainder of the documentation explains each command and workflow in greater depth.

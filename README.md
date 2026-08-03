@@ -1,170 +1,111 @@
 # iMovieHD2FCP
 
-> **Professional migration tools for preserving Apple iMovie HD projects in Final Cut Pro.**
+> **Migrate legacy iMovie HD projects into Final Cut Pro while preserving project structure, media, and edit decisions.**
 
-iMovieHD2FCP is a comprehensive toolkit for analysing, converting and documenting legacy **iMovie HD** archives while preparing them for use in modern **Final Cut Pro**.
-
-Rather than simply converting video files, iMovieHD2FCP provides a complete migration workflow that analyses an archive, verifies its contents, converts media, generates detailed reports, organises Final Cut Events and builds safe Final Cut Pro import files.
-
-Version **1.0.0** is the first stable production release.
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Python](https://img.shields.io/badge/python-3.9+-green)
+![Platform](https://img.shields.io/badge/macOS-supported-lightgrey)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
 
 ---
 
-## Why iMovieHD2FCP?
+## Overview
 
-Apple discontinued **iMovie HD** many years ago, leaving thousands of family history projects, travel documentaries and personal films locked inside an obsolete project format.
+**iMovieHD2FCP** is a migration toolkit designed to help preserve and modernise legacy **iMovie HD (2002–2006)** projects by converting them into a format that can be imported into modern versions of **Final Cut Pro**.
 
-This project was created to preserve those archives for future generations by providing a reliable migration path into modern Final Cut Pro.
+Many family historians, video enthusiasts, schools and organisations still possess valuable archives created with iMovie HD. Unfortunately these projects are no longer supported by current Apple software.
 
-The guiding principles are simple:
+Rather than simply copying media files, iMovieHD2FCP analyses each archive, reconstructs project information where possible and generates Final Cut Pro import packages that preserve the original project organisation.
 
-- Preserve the original archive
-- Never overwrite source media
-- Produce reproducible outputs
-- Generate reports for every stage
-- Keep the migration process transparent and safe
+The goal is simple:
+
+> **Keep your archive alive without losing years of editing work.**
 
 ---
 
 # Features
 
-### Archive Analysis
+Version 1.0 includes:
 
-Analyse complete iMovie HD archives before conversion.
-
-- Detect every project
-- Inventory media
-- Identify missing assets
-- Summarise archive contents
-- Generate detailed statistics
-
----
-
-### Media Conversion
-
-Convert legacy media into Final Cut Pro friendly formats.
-
-- Resume-safe batch conversion
-- FFmpeg-powered transcoding
-- Preserves directory structure
-- Safe re-run capability
+- Analyse complete iMovie HD archives
+- Convert legacy media into Final Cut Pro compatible formats
+- Verify completed conversions
+- Produce detailed HTML and text reports
+- Generate editable Final Cut Event plans
+- Build Final Cut Pro XML import packages
+- Preserve original media (read-only)
+- Batch process multiple projects
+- Comprehensive installation diagnostics (`doctor`)
+- Command-line interface suitable for large archives
 
 ---
 
-### Verification
+# What Version 1.0 Preserves
 
-Automatically verify converted archives.
+Where possible the conversion process preserves:
 
-- Check converted outputs
-- Detect missing files
-- Validate conversion completeness
-- Generate verification reports
+- Project organisation
+- Clip timing
+- Clip ordering
+- Trim points
+- Rendered transitions
+- Rendered titles
+- Audio synchronisation
+- Original media references
+- Project metadata
 
----
-
-### Archive Reports
-
-Produce professional documentation for every archive.
-
-- Plain text reports
-- Rich HTML reports
-- Archive summaries
-- Conversion statistics
-- Verification results
+The software is designed to produce an import that closely matches the visual appearance of the original iMovie HD project while remaining compatible with current Final Cut Pro workflows.
 
 ---
 
-### Event Planning
+# Current Limitations
 
-Generate editable Event plans before import.
+Version 1.0 does **not** recreate every iMovie HD editing feature as native Final Cut Pro objects.
 
-Features include:
+Some items are intentionally preserved using rendered media rather than editable timeline elements.
 
-- One Event per project
-- Merge projects into Events
-- Rename Events
-- Reorganise archives before Final Cut import
+Examples include:
 
----
+- Native title reconstruction
+- Native transition recreation
+- Motion effects
+- Legacy iMovie themes
+- Ken Burns editing controls
+- Live effect parameters
 
-### Final Cut Pro Import Builder
-
-Create safe XML import packages.
-
-- Per-project imports
-- Event-based organisation
-- Preserved media references
-- Repeatable import workflow
-
----
-
-### Environment Diagnostics
-
-Built-in installation verification.
-
-The Doctor command checks:
-
-- Python installation
-- Virtual environment
-- FFmpeg
-- FFprobe
-- Required project files
-- Product installation
-
----
-
-# Version 1.0.0 Highlights
-
-This first production release includes:
-
-- Unified command-line interface
-- Resume-safe batch conversion
-- Archive verification
-- Persistent command logs
-- HTML and text reporting
-- Event planning
-- Final Cut Pro XML generation
-- Product installer
-- Environment diagnostics
-- Documentation
+These remain candidates for future development.
 
 ---
 
 # Installation
 
-Clone the repository.
+Clone the repository:
 
 ```bash
 git clone https://github.com/kymknuckey-dev/iMovieHD2FCP.git
 cd iMovieHD2FCP
 ```
 
-Create and activate a virtual environment.
+Create a virtual environment:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install dependencies.
-
-```bash
-pip install -r requirements.txt
-```
-
-Install the product.
+Install the product:
 
 ```bash
 python3 install_product.py
 ```
 
-Verify installation.
+Confirm the installation:
 
 ```bash
 imoviehd2fcp doctor
 ```
 
-Expected result:
+You should see:
 
 ```
 READY
@@ -174,66 +115,38 @@ READY
 
 # Quick Start
 
-## 1. Check your installation
+Analyse an archive:
 
 ```bash
-imoviehd2fcp doctor
+imoviehd2fcp analyse "/Volumes/Archive" "/Volumes/Archive Output"
 ```
 
----
-
-## 2. Analyse an archive
+Convert the archive:
 
 ```bash
-imoviehd2fcp analyse SOURCE OUTPUT
+imoviehd2fcp convert "/Volumes/Archive" "/Volumes/Archive Output"
 ```
 
-Review the generated report before converting.
-
----
-
-## 3. Convert media
+Verify the conversion:
 
 ```bash
-imoviehd2fcp convert SOURCE OUTPUT
+imoviehd2fcp verify "/Volumes/Archive" "/Volumes/Archive Output"
 ```
 
-The conversion is resume-safe and may be run multiple times.
-
----
-
-## 4. Verify outputs
+Generate an Event Plan:
 
 ```bash
-imoviehd2fcp verify SOURCE OUTPUT
+imoviehd2fcp plan-events \
+"/Volumes/Archive Output" \
+--plan "/Volumes/Event Plan.csv"
 ```
 
----
-
-## 5. Generate reports
+Generate Final Cut Pro import packages:
 
 ```bash
-imoviehd2fcp report OUTPUT
-```
-
-Creates both text and HTML reports.
-
----
-
-## 6. Plan Final Cut Events
-
-```bash
-imoviehd2fcp plan-events OUTPUT --plan EVENT_PLAN.csv
-```
-
-Edit the CSV if required before importing.
-
----
-
-## 7. Build Final Cut imports
-
-```bash
-imoviehd2fcp build-imports --plan EVENT_PLAN.csv --output FINAL_CUT_IMPORTS
+imoviehd2fcp build-imports \
+--plan "/Volumes/Event Plan.csv" \
+--output "/Volumes/FCP Imports"
 ```
 
 Import the generated XML files into Final Cut Pro.
@@ -243,150 +156,113 @@ Import the generated XML files into Final Cut Pro.
 # Typical Workflow
 
 ```
-iMovie HD Archive
-
-        │
-
-        ▼
 Analyse Archive
-
         │
-
+        ▼
+Review Reports
+        │
         ▼
 Convert Media
-
         │
-
         ▼
-Verify Conversion
-
+Verify Results
         │
-
         ▼
-Generate Reports
-
+Create Event Plan
         │
-
         ▼
-Plan Events
-
+Generate XML Imports
         │
-
-        ▼
-Build XML Imports
-
-        │
-
         ▼
 Import into Final Cut Pro
+        │
+        ▼
+Review Projects
 ```
-
----
-
-# Command Summary
-
-| Command | Description |
-|----------|-------------|
-| `doctor` | Verify installation and environment |
-| `analyse` | Analyse an archive without conversion |
-| `convert` | Convert media and projects |
-| `verify` | Verify conversion outputs |
-| `report` | Generate archive reports |
-| `plan-events` | Create an editable Event Plan CSV |
-| `build-imports` | Generate Final Cut Pro XML imports |
-
----
-
-# Output Structure
-
-A successful conversion produces a structure similar to:
-
-```text
-Conversion Destination/
-
-├── batch-conversion-state.json
-├── batch-conversion-summary.json
-├── batch-conversion-summary.csv
-├── batch-conversion-report.txt
-├── Logs/
-└── Reports/
-    ├── Archive Verification Report.txt
-    └── Archive Verification Report.html
-```
-
----
-
-# Safety
-
-**The original iMovie HD archive is never modified.**
-
-All converted media, reports and Final Cut Pro imports are written to a separate destination folder.
-
-This allows conversions to be repeated without risk to the original archive.
 
 ---
 
 # Documentation
 
-Additional documentation is available in the **docs** folder.
+Complete documentation is available in the **docs** folder.
 
-- Getting Started
-- User Guide
-- CLI Reference
-- Installation Guide
-- FAQ
-- Troubleshooting
-- Release Notes
+| Document | Description |
+|-----------|-------------|
+| GETTING_STARTED.md | Installation and first conversion |
+| USER_GUIDE.md | Complete operating guide |
+| CLI_REFERENCE.md | Command reference |
+| WORKFLOW.md | Recommended migration workflow |
+| FAQ.md | Frequently asked questions |
+| TROUBLESHOOTING.md | Common problems and solutions |
+| TESTING.md | Testing procedures |
+| RELEASE_CHECKLIST.md | Release process |
+| RELEASE_NOTES_1.0.0.md | Version history |
 
 ---
 
-# Current Limitations
+# Project Structure
 
-iMovieHD2FCP focuses on preserving media and project organisation.
+```
+iMovieHD2FCP/
 
-Some original iMovie HD editing features cannot currently be recreated exactly inside Final Cut Pro, including:
+docs/
+legacy/
+src/
+tests/
 
-- Native iMovie HD titles
-- Certain transitions
-- Some timeline effects
+install_product.py
+pyproject.toml
+README.md
+```
 
-These remain areas of ongoing research.
+---
+
+# Designed For
+
+This project is particularly useful for:
+
+- Family historians
+- Genealogists
+- Historical societies
+- Schools
+- Community organisations
+- Video preservation projects
+- Long-term digital archives
 
 ---
 
 # Roadmap
 
-## Version 1.0
+Planned future improvements include:
 
-- Stable command-line interface
-- Archive analysis
-- Media conversion
-- Verification
-- Reports
-- Event planning
-- Final Cut Pro XML generation
-
-### Planned
-
-- Improved title recreation
-- Enhanced transition support
-- Automatic Final Cut Library creation
-- Metadata enhancements
-- Native macOS graphical application
+- Native Final Cut titles
+- Native Final Cut transitions
+- Motion template support
+- Improved timeline reconstruction
+- Enhanced metadata preservation
+- GUI front-end
+- Batch scheduling
+- Additional report formats
 
 ---
 
 # Contributing
 
-Bug reports, archive samples and feature suggestions are welcome.
+Contributions, bug reports and feature suggestions are welcome.
 
-If you encounter an archive that behaves unexpectedly, please open an Issue with as much detail as possible.
+Please include:
+
+- macOS version
+- Python version
+- Final Cut Pro version
+- Sample project (if possible)
+- Complete console output
 
 ---
 
 # Licence
 
-This project is released under the MIT License.
+This project is released under the MIT Licence.
 
 See the LICENSE file for details.
 
@@ -394,19 +270,12 @@ See the LICENSE file for details.
 
 # Acknowledgements
 
-This project builds upon the work of:
+This project exists because thousands of legacy iMovie HD projects still contain irreplaceable family history.
 
-- Apple iMovie HD
-- Apple Final Cut Pro
-- FFmpeg
-- The Python open-source community
+The goal is to ensure those memories remain accessible for future generations.
 
 ---
 
-# Author
+**Version:** 1.0.0
 
-**Kym Knuckey**
-
-Created to preserve decades of personal, family and historical iMovie HD archives and provide a safe migration path into modern Final Cut Pro.
-
-If this project helps preserve even one family's memories, then it has achieved its purpose.
+**Status:** Stable
