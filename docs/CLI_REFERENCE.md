@@ -1,89 +1,78 @@
 # CLI Reference
 
-**Version 1.0.0**
-
----
-
-# Contents
-
-- Introduction
-- General Syntax
-- Global Options
-- Commands
-  - doctor
-  - analyse
-  - convert
-  - verify
-  - report
-  - plan-events
-  - build-imports
-- Typical Workflows
-- Exit Codes
-- Examples
+**iMovieHD2FCP Version 1.0.0**
 
 ---
 
 # Introduction
 
-This document describes every command supported by **iMovieHD2FCP**.
+The iMovieHD2FCP Command Line Interface (CLI) provides access to every feature of the application.
 
-Unlike the *Getting Started Guide*, which explains the migration process, this document is intended as a command reference for day-to-day use.
-
----
-
-# General Syntax
-
-Every command follows the same structure.
+The general syntax is:
 
 ```bash
-imoviehd2fcp [global options] command [command options]
+imoviehd2fcp COMMAND [OPTIONS]
 ```
 
-Examples:
+Display general help at any time with:
 
 ```bash
-imoviehd2fcp doctor
+imoviehd2fcp --help
 ```
 
-```bash
-imoviehd2fcp analyse "/Volumes/Archives/Europe 2005"
-```
+Display help for an individual command:
 
 ```bash
-imoviehd2fcp convert "/Volumes/Archives/Europe 2005"
+imoviehd2fcp COMMAND --help
 ```
 
 ---
 
 # Global Options
 
-Display help.
+## Show Help
 
 ```bash
 imoviehd2fcp --help
 ```
 
-Display version.
+Displays the complete list of available commands.
+
+---
+
+## Show Version
 
 ```bash
 imoviehd2fcp --version
 ```
 
-Example output
+Example:
 
-```
+```text
 1.0.0
 ```
 
 ---
 
-# doctor
+# Available Commands
 
-## Purpose
+Version 1.0 provides the following commands:
 
-Checks the installation and reports whether the application is ready to use.
+| Command | Purpose |
+|----------|---------|
+| doctor | Verify installation and dependencies |
+| analyse | Scan an archive without converting media |
+| convert | Convert an archive |
+| verify | Verify conversion output |
+| report | Generate archive reports |
+| plan-events | Create an editable Event Plan |
+| build-imports | Generate Final Cut Pro XML packages |
 
 ---
+
+# doctor
+
+Checks that the installation is complete and ready to use.
 
 ## Syntax
 
@@ -91,108 +80,100 @@ Checks the installation and reports whether the application is ready to use.
 imoviehd2fcp doctor
 ```
 
----
+## Example
 
-## Checks Performed
-
-The Doctor command verifies:
-
-- Product installation
-- Python environment
-- FFmpeg
-- FFprobe
-- Core application modules
-- Legacy conversion modules
-
----
-
-## Successful Output
-
+```bash
+imoviehd2fcp doctor
 ```
+
+Typical output:
+
+```text
+Python environment
+FFmpeg
+FFprobe
+Product components
+
 READY
 ```
 
----
+Run this command:
 
-## Typical Uses
-
-Run after:
-
-- installation
-- upgrading Python
-- updating FFmpeg
-- moving the application
-- restoring from backup
+- after installation
+- after upgrading
+- after changing Python versions
+- before reporting issues
 
 ---
 
 # analyse
 
-## Purpose
-
-Scans an archive without modifying it.
-
----
+Scans an iMovie HD archive without converting media.
 
 ## Syntax
 
 ```bash
-imoviehd2fcp analyse <archive>
+imoviehd2fcp analyse <archive> <output>
 ```
 
-Example
+## Parameters
+
+| Parameter | Description |
+|------------|-------------|
+| archive | Source iMovie HD archive |
+| output | Output directory |
+
+## Example
 
 ```bash
-imoviehd2fcp analyse "/Volumes/Archives/Europe 2005"
+imoviehd2fcp analyse \
+"/Volumes/Europe 2005" \
+"/Volumes/Europe 2005 Output"
 ```
 
----
+Produces:
 
-## Reports
+- archive analysis
+- media inventory
+- project statistics
+- HTML reports
+- text reports
 
-Analysis includes:
-
-- Projects
-- Media
-- Missing assets
-- Statistics
-- Conversion requirements
-
-No files are changed.
+No media is modified.
 
 ---
 
 # convert
 
-## Purpose
-
 Converts an archive into Final Cut Pro compatible media.
-
----
 
 ## Syntax
 
 ```bash
-imoviehd2fcp convert <archive>
+imoviehd2fcp convert <archive> <output>
 ```
 
-Example
+## Parameters
+
+| Parameter | Description |
+|------------|-------------|
+| archive | Source archive |
+| output | Destination folder |
+
+## Example
 
 ```bash
-imoviehd2fcp convert "/Volumes/Archives/Europe 2005"
+imoviehd2fcp convert \
+"/Volumes/Europe 2005" \
+"/Volumes/Europe 2005 Output"
 ```
 
----
+Creates:
 
-## Conversion Process
-
-The converter:
-
-1. Analyses the archive
-2. Converts media
-3. Preserves folder structure
-4. Generates reports
-5. Creates Final Cut Pro assets
+- converted media
+- metadata
+- verification information
+- reports
 
 Original media is never modified.
 
@@ -200,252 +181,269 @@ Original media is never modified.
 
 # verify
 
-## Purpose
-
-Checks the results of a completed conversion.
-
----
+Checks a completed conversion.
 
 ## Syntax
 
 ```bash
-imoviehd2fcp verify <archive>
+imoviehd2fcp verify <archive> <output>
 ```
 
----
+## Example
 
-## Verification
+```bash
+imoviehd2fcp verify \
+"/Volumes/Europe 2005" \
+"/Volumes/Europe 2005 Output"
+```
 
-Checks include:
+Verification checks:
 
-- Converted media
-- Missing files
-- Reports
-- XML files
-- Folder structure
-
-Verification should always be run before importing into Final Cut Pro.
+- converted media
+- metadata
+- reports
+- expected output files
 
 ---
 
 # report
 
-## Purpose
-
-Creates documentation describing the archive.
-
----
+Generates archive reports.
 
 ## Syntax
 
 ```bash
-imoviehd2fcp report <archive>
+imoviehd2fcp report <archive> <output>
 ```
 
----
+## Example
 
-## Output
+```bash
+imoviehd2fcp report \
+"/Volumes/Europe 2005" \
+"/Volumes/Europe 2005 Output"
+```
 
-Reports include:
+Produces readable:
 
-- HTML summary
-- Text summary
-- Media inventory
-- Statistics
-- Warnings
+- HTML reports
+- text reports
+- archive summaries
 
-Reports are intended to be kept with the archive.
+Useful for documenting large collections.
 
 ---
 
 # plan-events
 
-## Purpose
-
-Creates an editable Event Plan for Final Cut Pro.
-
----
+Creates an editable CSV describing how projects should be organised into Final Cut Pro Events.
 
 ## Syntax
 
 ```bash
-imoviehd2fcp plan-events <archive>
+imoviehd2fcp plan-events <output> --plan <csv-file>
 ```
 
----
+## Parameters
 
-## Output
+| Parameter | Description |
+|------------|-------------|
+| output | Converted archive |
+| --plan | CSV file to create |
 
-Produces a CSV file containing:
+## Example
 
-- Project names
-- Suggested Event names
-- Groupings
+```bash
+imoviehd2fcp plan-events \
+"/Volumes/Europe 2005 Output" \
+--plan "/Volumes/Event Plan.csv"
+```
 
-Edit the CSV before generating import XML.
+The generated CSV can be edited in:
+
+- Numbers
+- Excel
+- LibreOffice
+- Google Sheets
 
 ---
 
 # build-imports
 
-## Purpose
-
-Creates Final Cut Pro XML import files.
-
----
+Builds Final Cut Pro XML import packages using an Event Plan.
 
 ## Syntax
 
 ```bash
-imoviehd2fcp build-imports <archive>
+imoviehd2fcp build-imports \
+--plan <csv-file> \
+--output <folder>
 ```
 
----
+## Parameters
 
-## Output
+| Parameter | Description |
+|------------|-------------|
+| --plan | Event Plan CSV |
+| --output | XML destination |
 
-Creates XML files suitable for:
+## Example
 
+```bash
+imoviehd2fcp build-imports \
+--plan "/Volumes/Event Plan.csv" \
+--output "/Volumes/FCP Imports"
 ```
-File
 
-    Import
-
-        XML...
-```
-
-inside Final Cut Pro.
+Produces one or more Final Cut Pro XML files ready for import.
 
 ---
 
 # Typical Workflow
 
-A complete migration usually consists of:
+The recommended sequence is:
 
-```bash
-imoviehd2fcp doctor
-```
-
-↓
-
-```bash
-imoviehd2fcp analyse "/Volumes/Archives/Europe 2005"
-```
+```text
+doctor
 
 ↓
 
-```bash
-imoviehd2fcp convert "/Volumes/Archives/Europe 2005"
-```
+analyse
 
 ↓
 
-```bash
-imoviehd2fcp verify "/Volumes/Archives/Europe 2005"
-```
+convert
 
 ↓
 
-```bash
-imoviehd2fcp report "/Volumes/Archives/Europe 2005"
-```
+verify
 
 ↓
 
-```bash
-imoviehd2fcp plan-events "/Volumes/Archives/Europe 2005"
-```
+plan-events
 
 ↓
 
-```bash
-imoviehd2fcp build-imports "/Volumes/Archives/Europe 2005"
-```
+build-imports
 
 ↓
 
-Import into Final Cut Pro.
+Import XML into Final Cut Pro
+```
 
 ---
 
-# Exit Codes
+# Getting Help
 
-| Code | Meaning |
-|-------|---------|
-| 0 | Command completed successfully |
-| 1 | General error |
-| 2 | Invalid command line arguments |
-| 3 | Missing dependency |
-| 4 | Archive could not be analysed |
-| 5 | Conversion failed |
-| 6 | Verification failed |
+Display help for any command.
 
-> **Note:** Some exit codes may be expanded in future releases as additional diagnostics are added.
+Example:
+
+```bash
+imoviehd2fcp analyse --help
+```
+
+Example:
+
+```bash
+imoviehd2fcp build-imports --help
+```
+
+Every command supports:
+
+```bash
+-h
+```
+
+or
+
+```bash
+--help
+```
+
+---
+
+# Exit Status
+
+A successful command returns:
+
+```text
+0
+```
+
+A failed command returns a non-zero exit status.
+
+This allows iMovieHD2FCP to be incorporated into shell scripts and automated workflows.
 
 ---
 
 # Examples
 
-Display the installed version.
+## Analyse an archive
 
 ```bash
-imoviehd2fcp --version
+imoviehd2fcp analyse \
+"/Volumes/Holidays 2004" \
+"/Volumes/Holidays Output"
 ```
 
-Check installation.
+---
+
+## Convert
 
 ```bash
-imoviehd2fcp doctor
+imoviehd2fcp convert \
+"/Volumes/Holidays 2004" \
+"/Volumes/Holidays Output"
 ```
 
-Analyse an archive.
+---
+
+## Verify
 
 ```bash
-imoviehd2fcp analyse "/Volumes/Archives/Family Videos"
+imoviehd2fcp verify \
+"/Volumes/Holidays 2004" \
+"/Volumes/Holidays Output"
 ```
 
-Convert an archive.
+---
+
+## Create an Event Plan
 
 ```bash
-imoviehd2fcp convert "/Volumes/Archives/Family Videos"
+imoviehd2fcp plan-events \
+"/Volumes/Holidays Output" \
+--plan "/Volumes/Event Plan.csv"
 ```
 
-Verify the results.
+---
+
+## Build XML Imports
 
 ```bash
-imoviehd2fcp verify "/Volumes/Archives/Family Videos"
-```
-
-Generate reports.
-
-```bash
-imoviehd2fcp report "/Volumes/Archives/Family Videos"
-```
-
-Plan Final Cut Pro Events.
-
-```bash
-imoviehd2fcp plan-events "/Volumes/Archives/Family Videos"
-```
-
-Create Final Cut Pro XML imports.
-
-```bash
-imoviehd2fcp build-imports "/Volumes/Archives/Family Videos"
+imoviehd2fcp build-imports \
+--plan "/Volumes/Event Plan.csv" \
+--output "/Volumes/FCP Imports"
 ```
 
 ---
 
 # Related Documentation
 
-| Document | Description |
-|----------|-------------|
-| GETTING_STARTED.md | First installation and migration |
-| USER_GUIDE.md | Complete user manual |
-| WORKFLOW.md | Recommended migration process |
-| TROUBLESHOOTING.md | Solving common issues |
+| Document | Purpose |
+|----------|---------|
+| README.md | Project overview |
+| GETTING_STARTED.md | First conversion |
+| USER_GUIDE.md | Complete operating guide |
+| WORKFLOW.md | Recommended workflow |
 | FAQ.md | Frequently asked questions |
+| TROUBLESHOOTING.md | Problem solving |
 
 ---
 
-© 2026 iMovieHD2FCP Project
+## Version History
+
+This reference applies to:
+
+**iMovieHD2FCP Version 1.0.0**
