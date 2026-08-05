@@ -95,6 +95,7 @@ def discover_fcpxml(root: Path) -> list[Path]:
         for path in root.rglob("*.fcpxml")
         if not path.name.startswith("._")
         and "_Parser Output" not in path.parts
+        and "Final Cut Imports" not in path.parts
     )
 
     # Prefer v1 XML when a folder also contains older Stage files.
@@ -145,7 +146,17 @@ def source_project_name(root: ET.Element, fallback: str) -> str:
     return fallback
 
 
+def logical_project_folder(relative_folder: Path) -> Path:
+    """Hide the Delta 3 projects/ container from user-facing grouping."""
+    parts = relative_folder.parts
+    if parts and parts[0].lower() == "projects":
+        remaining = parts[1:]
+        return Path(*remaining) if remaining else Path(".")
+    return relative_folder
+
+
 def suggested_event(relative_folder: Path, mode: str, level: int) -> str:
+    relative_folder = logical_project_folder(relative_folder)
     parts = relative_folder.parts
 
     if mode == "project":
@@ -178,7 +189,8 @@ def make_plan(
 ) -> list[PlanRow]:
     rows: list[PlanRow] = []
     for fcpxml in discover_fcpxml(converted_root):
-        relative_folder = fcpxml.parent.relative_to(converted_root)
+        physical_folder = fcpxml.parent.relative_to(converted_root)
+        relative_folder = logical_project_folder(physical_folder)
         root = read_xml(fcpxml)
         project_name = source_project_name(root, fcpxml.stem)
         rows.append(

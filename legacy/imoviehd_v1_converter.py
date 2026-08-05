@@ -1020,7 +1020,7 @@ def main() -> None:
     event_name = args.event_name or project_name
     output_dir = args.output_dir.expanduser().resolve()
     converted_dir = output_dir / "Converted Media"
-    xml_path = output_dir / f"{safe_name(project_name)}-v1.fcpxml"
+    xml_path = output_dir / f"{safe_name(project_name)}.fcpxml"
     title_report_path = output_dir / "title-inventory.txt"
     manifest_path = output_dir / "conversion-manifest.json"
     output_dir.mkdir(parents=True, exist_ok=True)

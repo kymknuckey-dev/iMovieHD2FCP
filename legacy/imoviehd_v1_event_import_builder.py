@@ -161,77 +161,52 @@ def write_xml(root: ET.Element, destination: Path) -> None:
     ET.parse(destination)
 
 
-def export_import_set(
+def finalise_project_xmls(
     rows: list[PlanRow],
-    output_root: Path,
+    report_root: Path,
 ) -> list[ExportRecord]:
-    grouped: dict[str, list[PlanRow]] = defaultdict(list)
-    event_order: list[str] = []
+    """Apply Event names to each project's own FCPXML file.
+
+    Delta 4 deliberately keeps one importable XML per project. The source file
+    is updated atomically in its existing project folder rather than copied to
+    a second Final Cut Imports tree.
+    """
+    records: list[ExportRecord] = []
+    report_root.mkdir(parents=True, exist_ok=True)
 
     for row in rows:
-        if row.event_name not in grouped:
-            event_order.append(row.event_name)
-        grouped[row.event_name].append(row)
+        source = Path(row.fcpxml_path).expanduser().resolve()
+        if not source.is_file():
+            raise ValueError(f"Project FCPXML does not exist: {source}")
 
-    records: list[ExportRecord] = []
-    output_root.mkdir(parents=True, exist_ok=True)
+        try:
+            root = ET.parse(source).getroot()
+        except (OSError, ET.ParseError) as exc:
+            raise ValueError(f"Could not read {source}: {exc}") from exc
 
-    for event_name in event_order:
-        event_dir = output_root / safe_name(event_name)
-        event_dir.mkdir(parents=True, exist_ok=True)
+        if root.tag != "fcpxml":
+            raise ValueError(f"Not an FCPXML document: {source}")
 
-        for index, row in enumerate(grouped[event_name], start=1):
-            source = Path(row.fcpxml_path).expanduser().resolve()
-            if not source.is_file():
-                raise ValueError(f"Source FCPXML does not exist: {source}")
+        set_event_name(root, row.event_name, source)
 
-            try:
-                root = ET.parse(source).getroot()
-            except (OSError, ET.ParseError) as exc:
-                raise ValueError(f"Could not read {source}: {exc}") from exc
+        temporary = source.with_name(source.name + ".tmp")
+        try:
+            write_xml(root, temporary)
+            temporary.replace(source)
+        finally:
+            temporary.unlink(missing_ok=True)
 
-            if root.tag != "fcpxml":
-                raise ValueError(f"Not an FCPXML document: {source}")
-
-            set_event_name(root, event_name, source)
-
-            filename = f"{index:02d} - {safe_name(row.project_name)}.fcpxml"
-            destination = event_dir / filename
-            write_xml(root, destination)
-
-            records.append(
-                ExportRecord(
-                    event_name=event_name,
-                    project_name=row.project_name,
-                    relative_project_path=row.relative_project_path,
-                    source_fcpxml=str(source),
-                    output_fcpxml=str(destination),
-                )
+        records.append(
+            ExportRecord(
+                event_name=row.event_name,
+                project_name=row.project_name,
+                relative_project_path=row.relative_project_path,
+                source_fcpxml=str(source),
+                output_fcpxml=str(source),
             )
-
-        instructions = [
-            f"Final Cut Event: {event_name}",
-            "=" * (17 + len(event_name)),
-            "",
-            "Import these XML files into the same Final Cut library in order:",
-            "",
-        ]
-        for index, row in enumerate(grouped[event_name], start=1):
-            instructions.append(
-                f"{index:02d}. {index:02d} - {safe_name(row.project_name)}.fcpxml"
-            )
-        instructions += [
-            "",
-            "Each file is an intact one-project FCPXML with only its Event name changed.",
-            "No resources or timeline references have been merged or renumbered.",
-        ]
-        (event_dir / "IMPORT ORDER.txt").write_text(
-            "\n".join(instructions) + "\n",
-            encoding="utf-8",
         )
 
     return records
-
 
 def write_reports(
     output_root: Path,
@@ -269,7 +244,7 @@ def write_reports(
         grouped[record.event_name].append(record)
 
     lines = [
-        "iMovieHD2FCP Safe Event Import Set",
+        "iMovieHD2FCP Finalised Project Imports",
         "=================================",
         "",
         f"Events: {len(grouped)}",
@@ -285,11 +260,30 @@ def write_reports(
 
     lines += [
         "",
-        "Import all files into the same Final Cut library.",
-        "Files are grouped by intended Event and numbered in import order.",
+        "Each project XML remains beside its converted project media.",
+        "Import the required project XML files into the same Final Cut library.",
     ]
     (output_root / "event-import-set-report.txt").write_text(
         "\n".join(lines) + "\n",
+        encoding="utf-8",
+    )
+
+    status_path = output_root / "final-cut-import-status.json"
+    status_path.write_text(
+        json.dumps(
+            {
+                "status": "ready",
+                "mode": "per-project-in-place",
+                "events": len(grouped),
+                "projects": len(records),
+                "project_xml_files": [
+                    record.output_fcpxml for record in records
+                ],
+            },
+            indent=2,
+            ensure_ascii=False,
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -297,7 +291,7 @@ def write_reports(
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Create safe, intact per-project FCPXML files grouped by Event."
+            "Prepare each project FCPXML in place with its planned Event name."
         )
     )
     parser.add_argument(
@@ -310,27 +304,27 @@ def main() -> int:
         "--output",
         required=True,
         type=Path,
-        help="Destination folder for Event import sets.",
+        help="Destination folder for build reports and completion status.",
     )
     args = parser.parse_args()
 
     try:
         rows = load_plan(args.plan.expanduser().resolve())
         output_root = args.output.expanduser().resolve()
-        records = export_import_set(rows, output_root)
+        records = finalise_project_xmls(rows, output_root)
         write_reports(output_root, records)
     except ValueError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
 
     event_count = len({record.event_name for record in records})
-    print("Safe Event import set created")
-    print("=============================")
+    print("Final Cut project files prepared")
+    print("================================")
     print(f"Events: {event_count}")
     print(f"Projects: {len(records)}")
-    print(f"Output: {output_root}")
+    print(f"Build reports: {output_root}")
     print("")
-    print("Import the numbered XML files into the intended Final Cut library.")
+    print("Each final XML remains inside its respective project folder.")
     return 0
 
 

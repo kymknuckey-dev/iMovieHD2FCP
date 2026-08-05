@@ -48,6 +48,7 @@ SUMMARY_TXT = "batch-conversion-report.txt"
 LOGS_DIRNAME = "_Batch Logs"
 TIMELINE_DIRNAME = "_Parser Output"
 CONVERTED_MEDIA_DIRNAME = "Converted Media"
+PROJECTS_DIRNAME = "projects"
 
 
 @dataclass
@@ -108,6 +109,46 @@ def discover_projects(root: Path) -> list[Path]:
         for path in root.rglob("*.iMovieProj")
         if "__MACOSX" not in path.parts and not path.name.startswith("._")
     )
+
+
+def preferred_project_output(output_root: Path, relative_folder: Path) -> Path:
+    """Return the Delta 3 location for one converted project."""
+    return output_root / PROJECTS_DIRNAME / relative_folder
+
+
+def legacy_project_output(output_root: Path, relative_folder: Path) -> Path:
+    """Return the Version 1 / Delta 2 project location."""
+    return output_root / relative_folder
+
+
+def has_conversion_output(path: Path) -> bool:
+    return (
+        path.is_dir()
+        and (
+            any(path.glob("*.fcpxml"))
+            or (path / CONVERTED_MEDIA_DIRNAME).is_dir()
+        )
+    )
+
+
+def select_project_output(
+    output_root: Path,
+    relative_folder: Path,
+    *,
+    force: bool,
+    verify_only: bool,
+) -> Path:
+    """Choose the new layout while retaining read compatibility with old outputs."""
+    preferred = preferred_project_output(output_root, relative_folder)
+    legacy = legacy_project_output(output_root, relative_folder)
+
+    if force:
+        return preferred
+    if has_conversion_output(preferred):
+        return preferred
+    if has_conversion_output(legacy):
+        return legacy
+    return preferred
 
 
 def shlex_quote(value: str) -> str:
@@ -593,6 +634,7 @@ def main() -> int:
     print("=" * 72)
     print(f"Archive:      {archive_root}")
     print(f"Destination:  {output_root}")
+    print(f"Projects:     {output_root / PROJECTS_DIRNAME}")
     print(f"Discovered:   {len(all_projects)} project(s)")
     print(f"Selected:     {len(projects)} project(s)")
     print(f"Mode:         {'verify only' if args.verify_only else 'dry run' if args.dry_run else 'convert and verify'}")
@@ -608,8 +650,13 @@ def main() -> int:
         relative_key = relative_folder.as_posix()
         project_name = project_folder.name
         event_name = event_name_for(relative_folder, project_name, args.event_mode)
-        project_output = output_root / relative_folder
-        parser_output = project_output / TIMELINE_DIRNAME
+        project_output = select_project_output(
+            output_root,
+            relative_folder,
+            force=args.force,
+            verify_only=args.verify_only,
+        )
+        parser_output = project_output
         log_file = logs_root / (safe_name(relative_key.replace("/", " — ")) + ".log")
 
         print("=" * 72)

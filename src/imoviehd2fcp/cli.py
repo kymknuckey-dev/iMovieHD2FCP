@@ -261,7 +261,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     imports = sub.add_parser(
         "build-imports",
-        help="Create safe, intact per-project XML imports grouped by Event.",
+        help="Prepare each project FCPXML in place with its planned Event name.",
     )
     imports.add_argument("--plan", required=True, type=Path)
     imports.add_argument("--output", required=True, type=Path)
