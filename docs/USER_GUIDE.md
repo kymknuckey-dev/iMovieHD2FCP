@@ -1,33 +1,208 @@
 # User Guide
 
-## Supported production workflow
+## Introduction
 
-1. Run `doctor`.
-2. Analyse the archive when inventory is needed.
-3. Convert into an empty destination.
-4. Verify the completed conversion.
-5. Review the text or HTML archive report.
-6. Create and edit the Event-plan CSV.
-7. Build safe per-project Event imports.
-8. Import the numbered FCPXML files into Final Cut.
+Welcome to iMovieHD2FCP.
 
-## Status meanings
+This guide explains every feature of the application and provides detailed information about the complete migration workflow.
 
-- **PASS** — conversion and verification completed without reported concerns.
-- **WARN** — usable output exists, but warnings or unresolved references require review.
-- **FAIL** — conversion failed or output did not pass required verification.
+If this is your first time using the application, read **GETTING_STARTED.md** first.
 
-## Logs and reports
+---
 
-Each product command creates a timestamped log. Conversion and verification
-also create archive reports from `batch-conversion-summary.json`.
+# Overview
 
-The HTML report is intended for convenient browsing. JSON and CSV remain the
-authoritative machine-readable records.
+iMovieHD2FCP converts legacy iMovie HD projects into Final Cut Pro projects while preserving the original project organisation wherever possible.
 
-## Final Cut import policy
+The migration consists of six stages:
 
-Version 1 uses one intact XML document per original iMovie project. These files
-are grouped into folders matching the intended Final Cut Event. This avoids the
-internal-reference problems encountered when complete project documents were
-merged into one large XML.
+1. Analyse Archive
+2. Convert Archive
+3. Create Event Plan
+4. Prepare Final Cut Project Files
+5. Import into Final Cut Pro
+6. Review the results
+
+---
+
+# Main Window
+
+Describe each section of the application:
+
+- Source Archive
+- Output Folder
+- Progress summary
+- Workflow navigation
+- Activity log
+
+Include annotated screenshots in the final release.
+
+---
+
+# Analyse Archive
+
+Purpose
+
+What happens during analysis
+
+What reports are generated
+
+What the summary statistics mean
+
+How to interpret warnings
+
+---
+
+# Convert Archive
+
+What conversion actually does
+
+How converted media is organised
+
+Expected running time
+
+Resume behaviour
+
+Force rebuilds
+
+---
+
+# Converted Project Structure
+
+Explain every file created.
+
+Example
+
+projects/
+    Disney Final/
+        Small World/
+            Converted Media/
+            Small World.fcpxml
+            Small World-analysis.txt
+            Small World-report.txt
+            Small World-timeline.json
+
+Describe each file.
+
+---
+
+# Event Plan
+
+Purpose
+
+CSV format
+
+Columns
+
+Typical edits
+
+Renaming Events
+
+Moving Projects
+
+Disabling projects
+
+Examples
+
+---
+
+# Prepare Final Cut Project Files
+
+Explain:
+
+- Reads Event Plan
+- Updates each project's FCPXML
+- No duplicate XML files
+- Existing project XML updated in place
+
+---
+
+# Importing into Final Cut Pro
+
+Recommended workflow
+
+Importing multiple projects
+
+Importing one project
+
+Creating libraries
+
+Organising Events
+
+---
+
+# Reports
+
+Archive Summary
+
+Analysis reports
+
+Conversion reports
+
+Build reports
+
+Log files
+
+What each report is used for.
+
+---
+
+# Settings
+
+Explain every preference.
+
+Current defaults.
+
+Recommended settings.
+
+---
+
+# Command Line
+
+Brief overview.
+
+Link to CLI_REFERENCE.md.
+
+---
+
+# Tips
+
+Recommended workflow
+
+Working with large archives
+
+Backing up archives
+
+Network storage
+
+External drives
+
+---
+
+# Frequently Asked Questions
+
+Point readers to FAQ.md.
+
+---
+
+# Troubleshooting
+
+Point readers to TROUBLESHOOTING.md.
+
+---
+
+# Appendix
+
+Glossary
+
+Archive
+
+Event
+
+FCPXML
+
+Timeline
+
+Converted Media
+
+Project Folder
