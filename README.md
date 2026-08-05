@@ -1,10 +1,16 @@
 # iMovieHD2FCP
 
+![alt text](https://file%2B.vscode-resource.vscode-cdn.net/Users/kymknuckey/Desktop/Main%20Window.png?version%3D1785912365092)
+
 **A guided migration assistant for converting legacy iMovie HD projects into modern Final Cut Pro projects.**
 
 iMovieHD2FCP analyses legacy iMovie HD archives, converts compatible media, recreates project timelines, and prepares Final Cut Pro XML files while preserving the original project organisation.
 
-Version: **1.1 Release Candidate 1**
+Current Status
+✔ Version 1.1 RC1
+✔ Feature Complete
+✔ Tested with Final Cut Pro
+✔ Production Ready
 
 ---
 

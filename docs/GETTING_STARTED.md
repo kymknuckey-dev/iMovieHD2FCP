@@ -82,6 +82,8 @@ Next choose an empty **Output Folder**.
 
 The application writes all converted files into this folder and does not modify the original archive.
 
+![Select your iMovie HD archive and an empty output folder.](<Main Window.png>)
+
 **Expected result**
 
 Both paths are displayed and the **Analyse Archive** button is enabled.
@@ -104,6 +106,8 @@ During this step it:
 
 No media files are modified.
 
+![Review the Archive Summary before beginning the conversion.](<Analyse complete.png>)
+
 **Expected result**
 
 The Archive Summary opens automatically and the application reports that the archive is ready for conversion.
@@ -119,6 +123,8 @@ The application converts each project into its own Final Cut Pro project folder.
 Converted media, reports and project files are written beneath the output folder.
 
 Depending on archive size this may take several minutes.
+
+![When conversion finishes, proceed to organise your Final Cut Events.](<Convert complete.png>)
 
 **Expected result**
 
@@ -147,6 +153,8 @@ You may:
 
 Save the CSV when finished.
 
+![Review the proposed Event Plan. Most users can simply accept the suggested organisation.](<Event Plan.png>)
+
 **Expected result**
 
 The Event Plan reflects the Event organisation you want to see inside Final Cut Pro.
@@ -162,6 +170,8 @@ The application updates each project's Final Cut Pro XML file using the Event na
 No duplicate XML files are created.
 
 Each project retains one Final Cut Pro XML file beside its converted media.
+
+![The migration is complete. Import each project’s XML file into Final Cut Pro.](<Completion page.png>)
 
 **Expected result**
 
@@ -184,6 +194,8 @@ Open Final Cut Pro.
 Choose:
 
 **File → Import → XML…**
+
+![In Final Cut Pro choose File → Import → XML… and select the XML file inside each converted project folder.](<Final Cut Import.jpg>)
 
 Navigate to the required project folder.
 

@@ -4,6 +4,8 @@
 
 Welcome to iMovieHD2FCP.
 
+![alt text](<Main Window-1.png>)
+
 This guide explains every feature of the application and provides detailed information about the complete migration workflow.
 
 If this is your first time using the application, read **GETTING_STARTED.md** first.
