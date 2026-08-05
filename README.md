@@ -1,6 +1,6 @@
 # iMovieHD2FCP
 
-![alt text](https://file%2B.vscode-resource.vscode-cdn.net/Users/kymknuckey/Desktop/Main%20Window.png?version%3D1785912365092)
+![alt text](<docs/Main Window.png>)
 
 **A guided migration assistant for converting legacy iMovie HD projects into modern Final Cut Pro projects.**
 
