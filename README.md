@@ -1,115 +1,188 @@
-# iMovieHD2FCP 1.1.0 RC1
+# iMovieHD2FCP
 
-`iMovieHD2FCP` migrates legacy iMovie HD projects into modern Final Cut Pro.
+**A guided migration assistant for converting legacy iMovie HD projects into modern Final Cut Pro projects.**
 
-Version 1.0.0 is the first stable release and includes:
+iMovieHD2FCP analyses legacy iMovie HD archives, converts compatible media, recreates project timelines, and prepares Final Cut Pro XML files while preserving the original project organisation.
 
-- unified command-line interface;
-- resume-safe batch conversion;
-- post-conversion verification;
-- persistent command logs;
-- text and HTML archive reports;
-- Event planning;
-- safe intact per-project Final Cut imports;
-- installer and environment diagnostics;
-- product documentation and tests.
+Version: **1.1 Release Candidate 1**
 
-## Install or upgrade
+---
 
-Merge the RC3 files into the existing project folder, then run:
+## Why iMovieHD2FCP?
 
-```bash
-cd ~/Development/iMovieHD2FCP
-source .venv/bin/activate
-python3 install_product.py
-imoviehd2fcp doctor
+Many family historians, videographers and long-time Mac users still have valuable projects created with **iMovie HD (2002–2006)**. These projects are increasingly difficult to access on modern versions of macOS.
+
+iMovieHD2FCP provides a guided workflow to help preserve those projects by converting them into a format that can be imported into Final Cut Pro.
+
+The application is designed to:
+
+- Preserve original project structure
+- Preserve media organisation
+- Convert supported media formats
+- Generate one Final Cut Pro XML per project
+- Allow projects to be organised into Final Cut Events before import
+- Produce clear reports and logs for every conversion
+
+---
+
+# Features
+
+- Guided migration workflow
+- Archive analysis
+- Conversion readiness checking
+- Batch conversion
+- Automatic media organisation
+- Editable Event Plan
+- One FCPXML file per project
+- Resume interrupted conversions
+- Comprehensive reports and logs
+- Command-line automation
+
+---
+
+# Workflow
+
+The recommended workflow is:
+
+```
+Choose Archive
+        ↓
+Analyse Archive
+        ↓
+Review Analysis
+        ↓
+Convert Archive
+        ↓
+Create or Edit Event Plan
+        ↓
+Prepare Final Cut Project Files
+        ↓
+Import Project XML files into Final Cut Pro
 ```
 
-## Main commands
+---
 
-```bash
-imoviehd2fcp doctor
-imoviehd2fcp analyse SOURCE OUTPUT
-imoviehd2fcp convert SOURCE OUTPUT
-imoviehd2fcp verify SOURCE OUTPUT
-imoviehd2fcp report OUTPUT
-imoviehd2fcp plan-events OUTPUT --plan EVENT_PLAN.csv
-imoviehd2fcp build-imports --plan EVENT_PLAN.csv --output FINAL_CUT_IMPORTS
+# Output Structure
+
 ```
-
-## Generated output
-
-A successful conversion now includes:
-
-```text
-Conversion Destination/
-├── batch-conversion-state.json
-├── batch-conversion-summary.json
-├── batch-conversion-summary.csv
-├── batch-conversion-report.txt
+Output/
+├── projects/
+│   └── <Archive Folder>/
+│       └── <Project>/
+│           ├── Converted Media/
+│           ├── Project.fcpxml
+│           ├── Project-analysis.txt
+│           ├── Project-report.txt
+│           └── Project-timeline.json
+│
+├── Event Plan.csv
+├── Final Cut Build Reports/
 ├── Logs/
-└── Reports/
-    ├── Archive Verification Report.txt
-    └── Archive Verification Report.html
+└── _Batch Logs/
 ```
 
-See `docs/GETTING_STARTED.md` and `docs/USER_GUIDE.md`.
+Each converted project remains self-contained.
 
+---
 
-## Release notes
+# Installation
 
-See `docs/RELEASE_NOTES_1.0.0.md`.
-
-
-## Graphical application (Version 1.1 Alpha 2)
-
-Install the optional GUI:
+Clone the repository
 
 ```bash
+git clone https://github.com/kymknuckey-dev/iMovieHD2FCP.git
+cd iMovieHD2FCP
+```
+
+Create a virtual environment
+
+```bash
+python3 -m venv .venv
 source .venv/bin/activate
+```
+
+Install
+
+```bash
+python3 -m pip install -e .
+```
+
+Optional GUI support
+
+```bash
 python3 install_gui.py
 ```
 
-Launch it with:
+---
+
+# Quick Start
+
+Launch the application
 
 ```bash
 imoviehd2fcp-app
 ```
 
-The graphical application calls the same proven conversion engine as the CLI.
-See `docs/VERSION_1.1_ALPHA1.md`.
+or use the command line
 
+```bash
+imoviehd2fcp --help
+```
 
-### Alpha 2 interface polish
+---
 
-Alpha 2 adds toolbar actions, status cards, colour-coded logs, improved dialogs, remembered window state and Finder drag-and-drop. See `docs/VERSION_1.1_ALPHA2.md`.
+# Documentation
 
+- Getting Started
+- User Guide
+- Workflow Guide
+- CLI Reference
+- FAQ
+- Troubleshooting
+- Architecture
+- Testing Guide
 
-## Alpha 3 Workflow Assistant
+---
 
-Alpha 3 guides users from archive selection through Final Cut import generation. See `docs/VERSION_1.1_ALPHA3.md`.
+# Requirements
 
+- macOS
+- Python 3.10+
+- FFmpeg
+- FFprobe
+- Final Cut Pro (recommended)
 
-## Version 1.1 Delta 2
+---
 
-Delta 2 adds the Event Planning Assistant, contextual analysis results, archive-summary selection and the Migration Complete experience. See `docs/VERSION_1.1_DELTA2.md`.
+# Current Status
 
+Version 1.1 RC1
 
-## Version 1.1 Delta 3
+Feature complete.
 
-Delta 3 writes fresh conversions beneath `projects/`, keeping each project's media, reports, metadata and FCPXML together. See `docs/VERSION_1.1_DELTA3.md`.
+Current development is focused on:
 
+- Bug fixes
+- Compatibility
+- Documentation
+- Performance improvements
 
-## Version 1.1 Delta 4
+---
 
-Delta 4 keeps one final FCPXML per project beside its converted media, removes duplicate import XML copies, and removes Preview Conversion from the guided GUI. See `docs/VERSION_1.1_DELTA4.md`.
+# Contributing
 
+Bug reports, testing feedback and sample iMovie HD projects are welcome.
 
-## Version 1.1 Beta 1
+---
 
-Beta 1 removes the `-v1` suffix from new project FCPXML filenames and polishes the final user-facing workflow. See `docs/VERSION_1.1_BETA1.md`.
+# License
 
+(Add preferred licence here.)
 
-## Version 1.1 Release Candidate 1
+---
 
-RC1 is feature-frozen and ready for final workflow and compatibility testing. See `docs/RELEASE_NOTES_1.1.0_RC1.md` and `docs/RC1_TEST_CHECKLIST.md`.
+# Acknowledgements
+
+iMovieHD2FCP was created to help preserve legacy iMovie HD projects by providing a reliable migration path into modern Final Cut Pro workflows.
+
+Special thanks to the community of users who continue to preserve historical video archives.
