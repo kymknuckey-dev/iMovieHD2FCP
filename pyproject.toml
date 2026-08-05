@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "imoviehd2fcp"
-version = "1.1.0b1"
+version = "1.1.0rc1"
 description = "Migrate legacy iMovie HD projects into modern Final Cut Pro"
 readme = "README.md"
 requires-python = ">=3.9"

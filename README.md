@@ -1,4 +1,4 @@
-# iMovieHD2FCP 1.1.0 Alpha 3
+# iMovieHD2FCP 1.1.0 RC1
 
 `iMovieHD2FCP` migrates legacy iMovie HD projects into modern Final Cut Pro.
 
@@ -108,3 +108,8 @@ Delta 4 keeps one final FCPXML per project beside its converted media, removes d
 ## Version 1.1 Beta 1
 
 Beta 1 removes the `-v1` suffix from new project FCPXML filenames and polishes the final user-facing workflow. See `docs/VERSION_1.1_BETA1.md`.
+
+
+## Version 1.1 Release Candidate 1
+
+RC1 is feature-frozen and ready for final workflow and compatibility testing. See `docs/RELEASE_NOTES_1.1.0_RC1.md` and `docs/RC1_TEST_CHECKLIST.md`.

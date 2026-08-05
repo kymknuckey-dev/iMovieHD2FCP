@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0rc1
+
+- Declared Version 1.1 feature complete and entered release-candidate testing.
+- Preserved the guided Analyse → Convert → Organise → Prepare → Import workflow.
+- Preserved one cleanly named FCPXML per project.
+- Preserved Event Plan editing and in-place Event assignment.
+- Added RC1 release notes and a formal test checklist.
+- Limited further work to bug fixes, compatibility and documentation.
+
 ## 1.1.0b1
 
 - Released Version 1.1 Beta 1 for final workflow testing.
